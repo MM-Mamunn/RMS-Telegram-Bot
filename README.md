@@ -62,6 +62,8 @@ telegram-bot/
     bot.ts                     Bot composition
     index.ts                   Long polling entrypoint
   .env.example                 Documented environment variables
+  public/
+    index.html                 Minimal Vercel static output placeholder
   Dockerfile                   Container deployment
   package.json                 Scripts and dependencies
   tsconfig.json                TypeScript configuration
