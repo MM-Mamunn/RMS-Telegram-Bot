@@ -229,7 +229,6 @@ Vercel is only appropriate for webhook mode.
    - `TELEGRAM_BOT_TOKEN`
    - `RMS_BACKEND_URL`
    - `RMS_AGENT_ENDPOINT`
-   - `BOT_WEBHOOK_SECRET` if used
 3. Deploy the project.
 4. Set the webhook after deployment:
 
@@ -244,7 +243,6 @@ Common Vercel issues:
 
 - Webhook URL must be HTTPS.
 - Environment variables must exist in the Vercel project, not only locally.
-- If `BOT_WEBHOOK_SECRET` is set locally when registering the webhook, it must also be set in Vercel.
 - Do not use `npm start` on Vercel for this bot; Vercel should call `api/webhook.ts`.
 
 ## Development Guide

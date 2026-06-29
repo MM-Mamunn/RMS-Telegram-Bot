@@ -17,6 +17,7 @@
     "webhook:delete": "tsx src/scripts/delete-webhook.ts"
   },
   "dependencies": {
+    "@vercel/functions": "^3.7.4",
     "dotenv": "^17.4.2",
     "grammy": "^1.37.0"
   },
