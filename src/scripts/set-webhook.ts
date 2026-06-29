@@ -7,6 +7,8 @@ const webhookUrl = getWebhookTargetUrl();
 await configureTelegramCommands();
 await bot.api.setWebhook(webhookUrl, {
   allowed_updates: [...env.telegram.allowedUpdates],
+  drop_pending_updates: true,
+  max_connections: 1,
   secret_token: env.telegram.webhookSecret,
 });
 

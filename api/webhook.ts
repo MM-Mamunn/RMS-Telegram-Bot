@@ -3,7 +3,11 @@ import { webhookCallback } from "grammy";
 import { bot } from "../src/bot.js";
 import { env } from "../src/config/env.js";
 
-const handleUpdate = webhookCallback(bot, "http");
+const handleUpdate = webhookCallback(bot, "http", {
+  onTimeout: "return",
+  secretToken: env.telegram.webhookSecret,
+  timeoutMilliseconds: 9000,
+});
 
 export default async function handler(request: IncomingMessage, response: ServerResponse): Promise<void> {
   if (request.method !== "POST") {
@@ -12,18 +16,5 @@ export default async function handler(request: IncomingMessage, response: Server
     return;
   }
 
-  if (!hasValidSecret(request)) {
-    response.writeHead(401, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ error: "Unauthorized" }));
-    return;
-  }
-
   await handleUpdate(request, response);
-}
-
-function hasValidSecret(request: IncomingMessage): boolean {
-  if (!env.telegram.webhookSecret) return true;
-
-  const header = request.headers["x-telegram-bot-api-secret-token"];
-  return header === env.telegram.webhookSecret;
 }

@@ -2,6 +2,7 @@ import { Bot } from "grammy";
 import { env } from "./config/env.js";
 import { BOT_COMMANDS, registerCommands } from "./commands/index.js";
 import { registerMessageHandlers } from "./handlers/message.handler.js";
+import { deduplicateUpdatesMiddleware } from "./middleware/deduplicate.middleware.js";
 import { registerErrorHandler } from "./middleware/error.middleware.js";
 import { loggingMiddleware } from "./middleware/logging.middleware.js";
 import type { RmsBotContext } from "./types/bot-context.js";
@@ -12,6 +13,7 @@ export const bot = createBot();
 export function createBot(): Bot<RmsBotContext> {
   const instance = new Bot<RmsBotContext>(env.telegram.token);
 
+  instance.use(deduplicateUpdatesMiddleware);
   instance.use(loggingMiddleware);
   registerCommands(instance);
   registerMessageHandlers(instance);
