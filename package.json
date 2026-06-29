@@ -1,0 +1,28 @@
+{
+  "name": "rms-telegram-bot",
+  "version": "1.0.0",
+  "description": "Independent Telegram bot client for the RMS Agentic AI API.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "start": "node dist/index.js",
+    "start:webhook": "node dist/webhook/server.js",
+    "webhook:set": "tsx src/scripts/set-webhook.ts",
+    "webhook:delete": "tsx src/scripts/delete-webhook.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "grammy": "^1.37.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^6.0.3"
+  }
+}

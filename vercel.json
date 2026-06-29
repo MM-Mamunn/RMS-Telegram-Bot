@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/webhook.ts": {
+      "runtime": "nodejs22.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/webhook",
+      "destination": "/api/webhook.ts"
+    }
+  ]
+}
