@@ -14,7 +14,10 @@ export async function sendAgentResponse(ctx, response) {
             continue;
         }
         try {
-            await ctx.reply(formatted, { parse_mode: "MarkdownV2" });
+            await ctx.reply(formatted, {
+                parse_mode: "MarkdownV2",
+                reply_parameters: getReplyParameters(ctx),
+            });
         }
         catch (error) {
             logger.warn({
@@ -28,7 +31,7 @@ export async function sendAgentResponse(ctx, response) {
 export async function sendUserFacingError(ctx, error) {
     const message = getFriendlyErrorMessage(error);
     try {
-        await ctx.reply(message);
+        await ctx.reply(message, { reply_parameters: getReplyParameters(ctx) });
     }
     catch (telegramError) {
         logger.error({
@@ -39,8 +42,11 @@ export async function sendUserFacingError(ctx, error) {
 async function sendPlainText(ctx, text) {
     const chunks = splitTextForTelegram(text, 3900);
     for (const chunk of chunks) {
-        await ctx.reply(chunk);
+        await ctx.reply(chunk, { reply_parameters: getReplyParameters(ctx) });
     }
+}
+function getReplyParameters(ctx) {
+    return ctx.message?.message_id ? { message_id: ctx.message.message_id } : undefined;
 }
 function getErrorDetails(error) {
     if (error instanceof Error) {

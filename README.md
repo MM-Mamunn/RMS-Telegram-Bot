@@ -119,7 +119,7 @@ npm start
 | `RMS_AGENT_ENDPOINT` | No | `/api/agentcalltg` | Public RMS Telegram AI endpoint. |
 | `NODE_ENV` | No | `development` | Runtime environment label. |
 | `PORT` | No | `8080` | HTTP port for standalone webhook mode. |
-| `REQUEST_TIMEOUT_MS` | No | `30000` | Timeout for RMS backend calls. |
+| `REQUEST_TIMEOUT_MS` | No | `60000` | Timeout for RMS backend calls. |
 | `MAX_USER_MESSAGE_LENGTH` | No | `2000` | Maximum Telegram text length forwarded to RMS. |
 | `LOG_LEVEL` | No | `info` | One of `debug`, `info`, `warn`, `error`. |
 | `LOG_MESSAGE_CONTENT` | No | `false` | Set to `true` only if message previews are acceptable in logs. |

@@ -20,7 +20,10 @@ export async function sendAgentResponse(ctx: RmsBotContext, response: string): P
     }
 
     try {
-      await ctx.reply(formatted, { parse_mode: "MarkdownV2" });
+      await ctx.reply(formatted, {
+        parse_mode: "MarkdownV2",
+        reply_parameters: getReplyParameters(ctx),
+      });
     } catch (error) {
       logger.warn(
         {
@@ -38,7 +41,7 @@ export async function sendUserFacingError(ctx: RmsBotContext, error: unknown): P
   const message = getFriendlyErrorMessage(error);
 
   try {
-    await ctx.reply(message);
+    await ctx.reply(message, { reply_parameters: getReplyParameters(ctx) });
   } catch (telegramError) {
     logger.error(
       {
@@ -53,8 +56,12 @@ async function sendPlainText(ctx: RmsBotContext, text: string): Promise<void> {
   const chunks = splitTextForTelegram(text, 3900);
 
   for (const chunk of chunks) {
-    await ctx.reply(chunk);
+    await ctx.reply(chunk, { reply_parameters: getReplyParameters(ctx) });
   }
+}
+
+function getReplyParameters(ctx: RmsBotContext) {
+  return ctx.message?.message_id ? { message_id: ctx.message.message_id } : undefined;
 }
 
 function getErrorDetails(error: unknown): Record<string, unknown> {

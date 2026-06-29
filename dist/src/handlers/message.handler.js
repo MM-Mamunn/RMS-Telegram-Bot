@@ -18,12 +18,14 @@ export function registerMessageHandlers(bot) {
             await ctx.reply(`Please keep your question under ${env.app.maxUserMessageLength} characters so I can process it reliably.`);
             return;
         }
-        await sendTypingAction(ctx);
+        const stopTyping = startTypingIndicator(ctx);
         try {
             const response = await agentChatService.answer(text);
+            stopTyping();
             await sendAgentResponse(ctx, response);
         }
         catch (error) {
+            stopTyping();
             logger.error({
                 error: error instanceof Error ? { name: error.name, message: error.message } : String(error),
             }, "Failed to process AI message");
@@ -33,6 +35,19 @@ export function registerMessageHandlers(bot) {
     bot.on("message", async (ctx) => {
         await ctx.reply("Please send a text question. Files, stickers, and media are not supported yet.");
     });
+}
+function startTypingIndicator(ctx) {
+    let stopped = false;
+    void sendTypingAction(ctx);
+    const interval = setInterval(() => {
+        if (!stopped) {
+            void sendTypingAction(ctx);
+        }
+    }, 4000);
+    return () => {
+        stopped = true;
+        clearInterval(interval);
+    };
 }
 async function sendTypingAction(ctx) {
     if (!ctx.chat?.id)

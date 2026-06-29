@@ -14,7 +14,7 @@ export const env = {
   app: {
     nodeEnv: readString("NODE_ENV", "development"),
     port: readInteger("PORT", 8080, { min: 1, max: 65535 }),
-    requestTimeoutMs: readInteger("REQUEST_TIMEOUT_MS", 30000, {
+    requestTimeoutMs: readInteger("REQUEST_TIMEOUT_MS", 60000, {
       min: 1000,
       max: 120000,
     }),
