@@ -1,6 +1,10 @@
-import "dotenv/config";
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { config } from "dotenv";
 const DEFAULT_AGENT_ENDPOINT = "/api/agentcalltg";
 const DEFAULT_WEBHOOK_PATH = "/api/webhook";
+loadEnvironmentFiles();
 export const env = {
     app: {
         nodeEnv: readString("NODE_ENV", "development"),
@@ -96,4 +100,22 @@ function normalizePath(value) {
 }
 function removeTrailingSlash(value) {
     return value.endsWith("/") ? value.slice(0, -1) : value;
+}
+function loadEnvironmentFiles() {
+    const moduleDir = dirname(fileURLToPath(import.meta.url));
+    const candidatePaths = [
+        resolve(process.cwd(), ".env"),
+        resolve(process.cwd(), "..", ".env"),
+        resolve(moduleDir, "../../.env"),
+        resolve(moduleDir, "../../../.env"),
+        resolve(moduleDir, "../../../../.env"),
+    ];
+    for (const envPath of uniquePaths(candidatePaths)) {
+        if (existsSync(envPath)) {
+            config({ path: envPath });
+        }
+    }
+}
+function uniquePaths(paths) {
+    return [...new Set(paths)];
 }
